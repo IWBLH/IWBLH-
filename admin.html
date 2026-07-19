@@ -401,6 +401,20 @@
                 </form>
             </details>
 
+            <details class="admin-card" style="margin-bottom: 30px;" open>
+                <summary style="cursor: pointer; color: var(--color-white); font-family: 'Cinzel', serif; font-size: 1.5rem; border-bottom: 2px solid var(--color-red); padding-bottom: 10px; display: inline-block;">ライン管理</summary>
+                <div style="margin-top: 20px;">
+                    <form id="addLineForm" style="display: flex; gap: 15px; margin-bottom: 20px;">
+                        <input type="text" name="name" placeholder="新しいライン名 (例: IWBLH HOMME)" required style="flex: 1; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+                        <input type="text" name="description" placeholder="説明 (任意)" style="flex: 2; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+                        <button type="submit" class="admin-btn admin-btn--primary">追加</button>
+                    </form>
+                    <div id="linesList" style="display: grid; gap: 10px;">
+                        <!-- Lines will be loaded here -->
+                    </div>
+                </div>
+            </details>
+
             <div class="product-form">
                 <h2 style="margin-bottom: 20px; font-family: 'Cinzel', serif;">新規商品追加</h2>
                 <form id="addProductForm">
@@ -426,6 +440,19 @@
                             <label><input type="checkbox" name="sizes" value="L"> L</label>
                             <label><input type="checkbox" name="sizes" value="XL"> XL</label>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ライン (コレクション)</label>
+                        <select name="lineId" id="lineSelect" required style="width: 100%; padding: 14px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-family: inherit;">
+                            <option value="ANOTHER">ANOTHER</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; text-transform: none; color: #fff;">
+                            <input type="checkbox" name="isFeatured" style="width: auto;"> 注目商品 (トップページにデカデカと表示)
+                        </label>
                     </div>
 
                     <!-- Image Upload Zone -->

@@ -176,9 +176,29 @@
     <script>
         const API_URL = '/api/products';
         // Auth is handled by admin-auth.js
+        
+        let linesData = [];
+        
+        async function loadLines() {
+            try {
+                const res = await fetch('/api/lines');
+                linesData = await res.json();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function getLineOptions(currentLineId) {
+            let options = `<option value="ANOTHER" ${currentLineId === 'ANOTHER' ? 'selected' : ''}>ANOTHER</option>`;
+            linesData.forEach(l => {
+                options += `<option value="${l.name}" ${currentLineId === l.name ? 'selected' : ''}>${l.name}</option>`;
+            });
+            return options;
+        }
 
         // Load Products
         async function loadInventory() {
+            await loadLines();
             try {
                 const res = await fetch(API_URL);
                 const products = await res.json();
@@ -196,6 +216,18 @@
                             <div>
                                 <h3 style="margin: 0 0 5px 0;">${p.name}</h3>
                                 <p style="color: var(--color-gray); margin: 0;">¥${p.price.toLocaleString()}</p>
+                                <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
+                                    <label style="color: #aaa; font-size: 0.8rem; display: flex; align-items: center; gap: 5px;">
+                                        ライン: 
+                                        <select onchange="updateProductField('${p._id}', 'lineId', this.value)" style="background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 3px;">
+                                            ${getLineOptions(p.lineId || 'ANOTHER')}
+                                        </select>
+                                    </label>
+                                    <label style="color: #aaa; font-size: 0.8rem; display: flex; align-items: center; gap: 5px;">
+                                        <input type="checkbox" onchange="updateProductField('${p._id}', 'isFeatured', this.checked)" ${p.isFeatured ? 'checked' : ''}>
+                                        注目商品
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div style="display: flex; align-items: center;">
@@ -214,6 +246,22 @@
                 document.getElementById('inventoryList').innerHTML = '<p>読み込みに失敗しました。</p>';
             }
         }
+        
+        async function updateProductField(id, field, value) {
+            try {
+                const res = await fetchWithAuth(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ [field]: value })
+                });
+                if (!res.ok) {
+                    alert('更新に失敗しました');
+                }
+            } catch(e) {
+                alert('通信エラー');
+            }
+        }
+
 
         // Toggle Stock Status
         async function toggleStock(id, checkbox) {

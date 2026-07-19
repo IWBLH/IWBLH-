@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('../models/Product');
 const Order = require('../models/Order');
 const User = require('../models/User'); // Import User model
+const Line = require('../models/Line'); // Import Line model
 const auth = require('../middleware/auth');
 const { sendOrderConfirmation, sendOrderShipped } = require('../utils/email');
 
@@ -41,7 +42,9 @@ const sanitizeProduct = (data) => ({
     image: data.image, // URLs are not sanitized as they need to be valid
     images: Array.isArray(data.images) ? data.images : [],
     sizes: Array.isArray(data.sizes) ? data.sizes : [],
-    isSoldOut: Boolean(data.isSoldOut)
+    isSoldOut: Boolean(data.isSoldOut),
+    lineId: sanitize(data.lineId) || 'ANOTHER',
+    isFeatured: Boolean(data.isFeatured)
 });
 
 // GET /api/products - Get all products
@@ -117,11 +120,95 @@ router.put('/products/:id', auth, async (req, res) => {
         if (req.body.image) product.image = req.body.image;
         if (req.body.sizes) product.sizes = req.body.sizes;
         if (typeof req.body.isSoldOut !== 'undefined') product.isSoldOut = req.body.isSoldOut;
+        if (req.body.lineId) product.lineId = sanitize(req.body.lineId);
+        if (typeof req.body.isFeatured !== 'undefined') product.isFeatured = req.body.isFeatured;
 
         const updatedProduct = await product.save();
         res.json(updatedProduct);
     } catch (err) {
         res.status(400).json({ message: '商品の更新に失敗しました' });
+    }
+});
+
+// ==========================================
+// Line Routes
+// ==========================================
+
+// GET /api/lines - Get all lines
+router.get('/lines', async (req, res) => {
+    try {
+        const lines = await Line.find().sort({ order: 1, createdAt: 1 });
+        res.json(lines);
+    } catch (err) {
+        res.status(500).json({ message: 'ラインの取得に失敗しました' });
+    }
+});
+
+// POST /api/lines - Add new line (Admin)
+router.post('/lines', auth, async (req, res) => {
+    try {
+        const { name, description, order } = req.body;
+        if (!name) return res.status(400).json({ message: 'ライン名は必須です' });
+        
+        const line = new Line({
+            name: sanitize(name),
+            description: sanitize(description),
+            order: Number(order) || 0
+        });
+        const newLine = await line.save();
+        res.status(201).json(newLine);
+    } catch (err) {
+        res.status(400).json({ message: 'ラインの追加に失敗しました (名前が重複している可能性があります)' });
+    }
+});
+
+// PUT /api/lines/:id - Update line (Admin)
+router.put('/lines/:id', auth, async (req, res) => {
+    try {
+        const line = await Line.findById(req.params.id);
+        if (!line) return res.status(404).json({ message: 'ラインが見つかりません' });
+
+        if (req.body.name) line.name = sanitize(req.body.name);
+        if (typeof req.body.description !== 'undefined') line.description = sanitize(req.body.description);
+        if (typeof req.body.order !== 'undefined') line.order = Number(req.body.order) || 0;
+
+        const updatedLine = await line.save();
+        res.json(updatedLine);
+    } catch (err) {
+        res.status(400).json({ message: 'ラインの更新に失敗しました' });
+    }
+});
+
+// DELETE /api/lines/:id - Delete line (Admin)
+router.delete('/lines/:id', auth, async (req, res) => {
+    try {
+        const line = await Line.findByIdAndDelete(req.params.id);
+        if (!line) return res.status(404).json({ message: 'ラインが見つかりません' });
+        // Optionally, reset products that were in this line to 'ANOTHER'
+        await Product.updateMany({ lineId: line.name }, { lineId: 'ANOTHER' });
+        res.json({ message: 'ラインを削除しました' });
+    } catch (err) {
+        res.status(500).json({ message: 'ラインの削除に失敗しました' });
+    }
+});
+
+// PUT /api/lines/reorder - Reorder lines (Admin)
+router.put('/lines/reorder', auth, async (req, res) => {
+    try {
+        const { lineOrders } = req.body; // Array of { id, order }
+        if (!Array.isArray(lineOrders)) return res.status(400).json({ message: '無効なデータ形式です' });
+
+        const bulkOps = lineOrders.map(lo => ({
+            updateOne: {
+                filter: { _id: lo.id },
+                update: { order: lo.order }
+            }
+        }));
+
+        await Line.bulkWrite(bulkOps);
+        res.json({ message: '並び順を更新しました' });
+    } catch (err) {
+        res.status(500).json({ message: '並び順の更新に失敗しました' });
     }
 });
 

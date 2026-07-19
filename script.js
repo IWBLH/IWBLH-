@@ -57,7 +57,19 @@ async function fetchProducts() {
         }, {});
 
         // Render products if on index page
-        if (document.getElementById('products')) {
+        if (document.getElementById('storefrontContainer')) {
+            let lines = [];
+            try {
+                const linesRes = await fetch('/api/lines');
+                if (linesRes.ok) {
+                    lines = await linesRes.json();
+                }
+            } catch (e) {
+                console.error('Failed to fetch lines', e);
+            }
+            renderStorefront(products, lines);
+        } else if (document.getElementById('products')) {
+            // For other pages that might still use the old container
             renderProducts(products);
         }
     } catch (err) {
@@ -65,10 +77,8 @@ async function fetchProducts() {
     }
 }
 
-function renderProducts(products) {
-    const grid = document.querySelector('.products__grid');
-    if (grid) {
-        grid.innerHTML = products.map(p => `
+function renderProductCardHTML(p) {
+    return `
         <article class="product-card fade-in ${p.isSoldOut ? 'sold-out' : ''}">
           <a href="product.html?id=${p.id}" class="product-card__link">
             <div class="product-card__image">
@@ -88,11 +98,65 @@ function renderProducts(products) {
             }
           </div>
         </article>
-        `).join('');
+    `;
+}
 
-        // Re-initialize animations
+function renderProducts(products) {
+    const grid = document.querySelector('.products__grid');
+    if (grid) {
+        grid.innerHTML = products.map(p => renderProductCardHTML(p)).join('');
         initScrollAnimations();
     }
+}
+
+function renderStorefront(products, lines) {
+    const container = document.getElementById('storefrontContainer');
+    if (!container) return;
+    
+    let html = '';
+    
+    // 1. Featured Product
+    const featuredProduct = products.find(p => p.isFeatured && !p.isSoldOut) || products.find(p => p.isFeatured);
+    if (featuredProduct) {
+        html += `
+            <div class="featured-product fade-in" style="margin-bottom: 60px; text-align: center;">
+                <p class="section__subtitle text-accent" style="margin-bottom: 10px;">FEATURED</p>
+                <a href="product.html?id=${featuredProduct.id}" style="text-decoration: none; display: block;">
+                    <img src="${featuredProduct.image}" alt="${featuredProduct.name}" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-bottom: 20px;">
+                    <h2 class="section__title" style="margin-bottom: 10px; font-size: 2rem;">${featuredProduct.name}</h2>
+                    <p style="color: var(--color-gray); font-size: 1.2rem;">¥${featuredProduct.price.toLocaleString()}</p>
+                </a>
+            </div>
+        `;
+    }
+
+    // 2. Lines
+    // Make sure ANOTHER is included if there are products with no line or line 'ANOTHER'
+    const existingLineNames = lines.map(l => l.name);
+    if (!existingLineNames.includes('ANOTHER')) {
+        lines.push({ name: 'ANOTHER', description: 'Other collection', order: 9999 });
+    }
+
+    lines.forEach(line => {
+        const lineProducts = products.filter(p => (p.lineId || 'ANOTHER') === line.name);
+        if (lineProducts.length > 0) {
+            html += `
+                <div class="line-section" style="margin-bottom: 80px;">
+                    <div class="section__header fade-in">
+                        <p class="section__subtitle text-accent">COLLECTION</p>
+                        <h2 class="section__title" style="font-size: 2.5rem;">${line.name}</h2>
+                        ${line.description ? `<p style="color: var(--color-gray); margin-top: 10px;">${line.description}</p>` : ''}
+                    </div>
+                    <div class="products__grid">
+                        ${lineProducts.map(p => renderProductCardHTML(p)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    });
+
+    container.innerHTML = html;
+    initScrollAnimations();
 }
 
 /* ===============================================

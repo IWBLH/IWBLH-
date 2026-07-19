@@ -10,6 +10,8 @@ const ProductSchema = new mongoose.Schema({
     category: { type: String, required: true },
     description: { type: String },
     isSoldOut: { type: Boolean, default: false },
+    lineId: { type: String, default: 'ANOTHER' }, // Uses line name or ID
+    isFeatured: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now }
 });
 
