@@ -43,7 +43,7 @@
     padding: 14px 16px;
     color: var(--color-gray);
     text-decoration: none;
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 0.85rem;
     letter-spacing: 1px;
     border-radius: 8px;
@@ -81,7 +81,7 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--color-gray);
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 0.8rem;
     letter-spacing: 1px;
     cursor: pointer;
@@ -109,7 +109,7 @@
 }
 
 .admin-header__title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 2rem;
     color: var(--color-white);
     margin: 0 0 10px;
@@ -148,7 +148,7 @@
 }
 
 .admin-card__title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 1.1rem;
     color: var(--color-white);
     margin: 0;
@@ -252,7 +252,7 @@
 }
 
 .admin-table th {
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 0.8rem;
     color: var(--color-gray);
     text-transform: uppercase;
@@ -274,7 +274,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 6px;
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 0.85rem;
     letter-spacing: 1px;
     cursor: pointer;
@@ -332,7 +332,7 @@
 }
 
 .admin-stat__value {
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 2.5rem;
     color: var(--color-accent);
     margin-bottom: 8px;
@@ -372,7 +372,7 @@
 }
 
 .admin-section__title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 1.3rem;
     color: var(--color-white);
     margin: 0;
@@ -399,7 +399,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     color: var(--color-white);
-    font-family: 'Bodoni Moda', serif;
+    font-family: 'Alte Haas Grotesk', sans-serif;
     font-size: 1rem;
     transition: border-color 0.3s ease;
 }

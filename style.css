@@ -1,3 +1,16 @@
+
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('assets/AlteHaasGroteskRegular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Alte Haas Grotesk';
+  src: url('assets/AlteHaasGroteskBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 /* ===============================================
    MODA IMPETO - Design System
    "quiet / dangerous"
@@ -21,9 +34,9 @@
   --color-gray-dark: #e0e0e0;
 
   /* Typography */
-  --font-display: 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-accent: 'Inter', sans-serif;
+  --font-display: 'Alte Haas Grotesk', sans-serif;
+  --font-body: 'Alte Haas Grotesk', sans-serif;
+  --font-accent: 'Alte Haas Grotesk', sans-serif;
 
   /* Spacing */
   --space-xs: 0.5rem;
@@ -1059,7 +1072,7 @@ padding: var(--space-xl) 0 var(--space-md);
   font-size: 0.8rem;
   font-weight: bold;
   z-index: 2;
-  font-family: 'Cinzel', serif;
+  font-family: 'Alte Haas Grotesk', sans-serif;
 }
 
 .product-card.sold-out .product-card__image img {
