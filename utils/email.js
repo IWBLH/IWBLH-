@@ -43,7 +43,7 @@ const sendEmail = async (to, subject, htmlContent) => {
         }
 
         const mailOptions = {
-            from: '"JE ME DÉCLARE" <noreply@modaimpeto.com>',
+            from: '"IWBLH" <noreply@modaimpeto.com>',
             to: to,
             subject: subject,
             html: htmlContent

@@ -20,7 +20,7 @@ const products = [
         image: 'assets/products/product_hoodie_1770300104061.png',
         images: ['assets/products/product_hoodie_1770300104061.png', 'assets/products/hoodie_back.png'],
         category: 'Tops',
-        description: 'The ultimate luxury essential. Made from heavyweight 500GSM organic cotton with a structured fit. Features a double-layered hood and the iconic JE ME DÉCLARE logo stitched in tonal silk thread. Built for the modern nomad.'
+        description: 'The ultimate luxury essential. Made from heavyweight 500GSM organic cotton with a structured fit. Features a double-layered hood and the iconic IWBLH logo stitched in tonal silk thread. Built for the modern nomad.'
     },
     {
         id: 3,
@@ -29,7 +29,7 @@ const products = [
         image: 'assets/products/product_tshirt_1770300121576.png',
         images: ['assets/products/product_tshirt_1770300121576.png'],
         category: 'Tops',
-        description: 'Simplicity redefined. A clean-cut tee crafted from ultra-soft Pima cotton with a slight sheen. The oversized yet tailored fit ensures a sophisticated drape. A versatile foundation for any JE ME DÉCLARE silhouette.'
+        description: 'Simplicity redefined. A clean-cut tee crafted from ultra-soft Pima cotton with a slight sheen. The oversized yet tailored fit ensures a sophisticated drape. A versatile foundation for any IWBLH silhouette.'
     },
     {
         id: 4,

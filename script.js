@@ -1,5 +1,5 @@
 /* ===============================================
-   JE ME DÉCLARE - Interactive Scripts
+   IWBLH - Interactive Scripts
    =============================================== */
 
 // Product Database (will be loaded from API)
