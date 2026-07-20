@@ -728,7 +728,7 @@ async function initCheckout() {
         if (paypalClientId) {
             if (!document.querySelector('script[src*="paypal.com/sdk/js"]')) {
                 const script = document.createElement('script');
-                script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=JPY&locale=en_US`;
+                script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=JPY`;
                 script.async = true;
                 script.onload = () => initPayPal();
                 document.head.appendChild(script);
