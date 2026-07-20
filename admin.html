@@ -500,8 +500,106 @@
         const previewContainer = document.getElementById('previewContainer');
         const imagePreview = document.getElementById('imagePreview');
 
+        // Lines Management
+        let linesData = [];
+        
+        async function loadLines() {
+            try {
+                const res = await fetch('/api/lines');
+                linesData = await res.json();
+                renderLines();
+                updateLineSelects();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function renderLines() {
+            const list = document.getElementById('linesList');
+            if(!list) return;
+            list.innerHTML = linesData.map((l, index) => `
+                <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1);">
+                    <div>
+                        <h4 style="margin: 0; color: #fff;">${l.name}</h4>
+                        <p style="margin: 5px 0 0; font-size: 0.8rem; color: #888;">${l.description}</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="moveLine(${index}, -1)" ${index === 0 ? 'disabled' : ''} style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">↑</button>
+                        <button onclick="moveLine(${index}, 1)" ${index === linesData.length - 1 ? 'disabled' : ''} style="background: #333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">↓</button>
+                        <button onclick="deleteLine('${l._id}')" style="background: var(--color-red); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">削除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateLineSelects() {
+            const select = document.getElementById('lineSelect');
+            if(!select) return;
+            select.innerHTML = '<option value="ANOTHER">ANOTHER</option>' + 
+                linesData.map(l => `<option value="${l.name}">${l.name}</option>`).join('');
+        }
+
+        async function moveLine(index, direction) {
+            const targetIndex = index + direction;
+            if (targetIndex < 0 || targetIndex >= linesData.length) return;
+            
+            // Swap in array
+            const temp = linesData[index];
+            linesData[index] = linesData[targetIndex];
+            linesData[targetIndex] = temp;
+            
+            // Re-render
+            renderLines();
+            
+            // Save to server
+            const lineOrders = linesData.map((l, i) => ({ id: l._id, order: i }));
+            try {
+                await fetchWithAuth('/api/lines/reorder', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lineOrders })
+                });
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        async function deleteLine(id) {
+            if(!confirm('本当にこのラインを削除しますか？このラインの商品は「ANOTHER」に移動されます。')) return;
+            try {
+                await fetchWithAuth(`/api/lines/${id}`, { method: 'DELETE' });
+                loadLines();
+            } catch(e) {
+                alert('削除に失敗しました');
+            }
+        }
+
+        document.getElementById('addLineForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            try {
+                const res = await fetchWithAuth('/api/lines', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: formData.get('name'),
+                        description: formData.get('description'),
+                        order: linesData.length
+                    })
+                });
+                if(res.ok) {
+                    e.target.reset();
+                    loadLines();
+                } else {
+                    alert('追加に失敗しました。');
+                }
+            } catch(err) {
+                console.error(err);
+            }
+        });
 
         // Initial Load
+        loadLines();
         loadProducts();
 
         /* ===============================================
@@ -562,7 +660,9 @@
                 category: formData.get('category'),
                 description: formData.get('description'),
                 image: document.getElementById('imageUrl').value,
-                sizes: selectedSizes
+                sizes: selectedSizes,
+                lineId: formData.get('lineId'),
+                isFeatured: formData.get('isFeatured') === 'on'
             };
 
             const token = sessionStorage.getItem('adminToken');
@@ -625,6 +725,14 @@
                 document.querySelectorAll('input[name="sizes"]').forEach(cb => {
                     cb.checked = sizes.includes(cb.value);
                 });
+
+                // Populate Line and Featured
+                if (form.querySelector('[name="lineId"]')) {
+                    form.querySelector('[name="lineId"]').value = product.lineId || 'ANOTHER';
+                }
+                if (form.querySelector('[name="isFeatured"]')) {
+                    form.querySelector('[name="isFeatured"]').checked = product.isFeatured || false;
+                }
 
                 // Set Edit Mode
                 form.setAttribute('data-mode', 'edit');
