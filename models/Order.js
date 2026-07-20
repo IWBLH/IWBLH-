@@ -7,9 +7,11 @@ const OrderSchema = new mongoose.Schema({
         email: String,
         firstName: String,
         lastName: String,
+        country: String,
         address: String,
         apartment: String,
         city: String,
+        state: String, // Ensure state is stored
         zipCode: String,
         phone: String
     },

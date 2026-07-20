@@ -444,8 +444,10 @@ function initPayPal() {
                 const state = document.getElementById('state').value;
                 const zipCode = document.getElementById('zipCode').value;
                 const phone = document.getElementById('phone').value;
+                const country = document.getElementById('country').value;
+                const agreePolicy = document.getElementById('agreePolicy').checked;
 
-                if (email && firstName && lastName && address && city && state && zipCode && phone) {
+                if (email && firstName && lastName && address && city && state && zipCode && phone && country && agreePolicy) {
                     actions.enable();
                 } else {
                     actions.disable();
@@ -545,7 +547,7 @@ function collectOrderData(paymentMethod, paymentId) {
             city: document.getElementById('city').value,
             state: document.getElementById('state').value,
             zipCode: document.getElementById('zipCode').value,
-            country: 'USA',
+            country: document.getElementById('country').value,
             phone: document.getElementById('phone').value
         },
         items: items,
@@ -609,6 +611,114 @@ async function saveOrderToBackend(orderData) {
    =============================================== */
 async function initCheckout() {
     try {
+        const countrySelect = document.getElementById('country');
+        const stateSelect = document.getElementById('state');
+        const shippingNotice = document.querySelector('.shipping-notice');
+        
+        if (countrySelect && stateSelect) {
+            countrySelect.addEventListener('change', () => {
+                if (countrySelect.value === 'US') {
+                    shippingNotice.innerHTML = 'ℹ️ Currently, we only ship to the contiguous United States (excluding Hawaii and Alaska).';
+                    stateSelect.innerHTML = `
+                        <option value="" disabled selected>Select State</option>
+                        <option value="AL">Alabama</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">Washington D.C.</option>
+                    `;
+                    // Layout changes for US
+                    document.getElementById('email').tabIndex = 1;
+
+                    document.getElementById('wrap-firstName').style.order = "1";
+                    document.getElementById('firstName').placeholder = "First Name";
+                    document.getElementById('firstName').tabIndex = 2;
+                    
+                    document.getElementById('wrap-lastName').style.order = "2";
+                    document.getElementById('lastName').placeholder = "Last Name";
+                    document.getElementById('lastName').tabIndex = 3;
+                    
+                    document.getElementById('wrap-address').style.order = "3";
+                    document.getElementById('address').placeholder = "Address";
+                    document.getElementById('address').tabIndex = 4;
+                    
+                    document.getElementById('wrap-apartment').style.order = "4";
+                    document.getElementById('apartment').placeholder = "Apartment, suite, etc. (optional)";
+                    document.getElementById('apartment').tabIndex = 5;
+                    
+                    document.getElementById('wrap-city').style.order = "5";
+                    document.getElementById('wrap-city').style.gridColumn = ""; // Reset for US
+                    document.getElementById('city').placeholder = "City";
+                    document.getElementById('city').tabIndex = 6;
+                    
+                    document.getElementById('wrap-state').style.order = "6";
+                    document.getElementById('state').tabIndex = 7;
+                    
+                    document.getElementById('wrap-zipCode').style.order = "7";
+                    document.getElementById('zipCode').placeholder = "ZIP Code";
+                    document.getElementById('zipCode').tabIndex = 8;
+                    
+                    document.getElementById('wrap-country').style.order = "8";
+                    document.getElementById('wrap-country').style.gridColumn = ""; // Reset for US
+                    document.getElementById('country').tabIndex = 9;
+                    
+                    document.getElementById('wrap-phone').style.order = "9";
+                    document.getElementById('phone').placeholder = "Phone Number";
+                    document.getElementById('phone').tabIndex = 10;
+                    
+                    document.getElementById('wrap-notice').style.order = "10";
+                    
+                    document.getElementById('agreePolicy').tabIndex = 11;
+                } else if (countrySelect.value === 'JP') {
+                    shippingNotice.innerHTML = 'ℹ️ 日本全国へ配送可能です。';
+                    stateSelect.innerHTML = `
+                        <option value="" disabled selected>都道府県を選択 / Select Prefecture</option>
+                        <option value="Hokkaido">北海道</option><option value="Aomori">青森県</option><option value="Iwate">岩手県</option><option value="Miyagi">宮城県</option><option value="Akita">秋田県</option><option value="Yamagata">山形県</option><option value="Fukushima">福島県</option><option value="Ibaraki">茨城県</option><option value="Tochigi">栃木県</option><option value="Gunma">群馬県</option><option value="Saitama">埼玉県</option><option value="Chiba">千葉県</option><option value="Tokyo">東京都</option><option value="Kanagawa">神奈川県</option><option value="Niigata">新潟県</option><option value="Toyama">富山県</option><option value="Ishikawa">石川県</option><option value="Fukui">福井県</option><option value="Yamanashi">山梨県</option><option value="Nagano">長野県</option><option value="Gifu">岐阜県</option><option value="Shizuoka">静岡県</option><option value="Aichi">愛知県</option><option value="Mie">三重県</option><option value="Shiga">滋賀県</option><option value="Kyoto">京都府</option><option value="Osaka">大阪府</option><option value="Hyogo">兵庫県</option><option value="Nara">奈良県</option><option value="Wakayama">和歌山県</option><option value="Tottori">鳥取県</option><option value="Shimane">島根県</option><option value="Okayama">岡山県</option><option value="Hiroshima">広島県</option><option value="Yamaguchi">山口県</option><option value="Tokushima">徳島県</option><option value="Kagawa">香川県</option><option value="Ehime">愛媛県</option><option value="Kochi">高知県</option><option value="Fukuoka">福岡県</option><option value="Saga">佐賀県</option><option value="Nagasaki">長崎県</option><option value="Kumamoto">熊本県</option><option value="Oita">大分県</option><option value="Miyazaki">宮崎県</option><option value="Kagoshima">鹿児島県</option><option value="Okinawa">沖縄県</option>
+                    `;
+                    // Layout changes for JP
+                    document.getElementById('email').tabIndex = 1;
+
+                    document.getElementById('wrap-country').style.order = "1";
+                    document.getElementById('wrap-country').style.gridColumn = "1 / -1";
+                    document.getElementById('country').tabIndex = 2;
+                    
+                    document.getElementById('wrap-lastName').style.order = "2";
+                    document.getElementById('lastName').placeholder = "姓 (Last Name)";
+                    document.getElementById('lastName').tabIndex = 3;
+                    
+                    document.getElementById('wrap-firstName').style.order = "3";
+                    document.getElementById('firstName').placeholder = "名 (First Name)";
+                    document.getElementById('firstName').tabIndex = 4;
+                    
+                    document.getElementById('wrap-zipCode').style.order = "4";
+                    document.getElementById('zipCode').placeholder = "郵便番号 (ZIP Code)";
+                    document.getElementById('zipCode').tabIndex = 5;
+                    
+                    document.getElementById('wrap-state').style.order = "5";
+                    document.getElementById('state').tabIndex = 6;
+                    
+                    document.getElementById('wrap-city').style.order = "6";
+                    document.getElementById('wrap-city').style.gridColumn = "1 / -1"; // Make full width for JP
+                    document.getElementById('city').placeholder = "市区町村 (City)";
+                    document.getElementById('city').tabIndex = 7;
+                    
+                    document.getElementById('wrap-address').style.order = "7";
+                    document.getElementById('address').placeholder = "丁目・番地・号 (Address)";
+                    document.getElementById('address').tabIndex = 8;
+                    
+                    document.getElementById('wrap-apartment').style.order = "8";
+                    document.getElementById('apartment').placeholder = "建物名・部屋番号など (Apartment, suite, optional)";
+                    document.getElementById('apartment').tabIndex = 9;
+                    
+                    document.getElementById('wrap-phone').style.order = "9";
+                    document.getElementById('phone').placeholder = "電話番号 (Phone Number)";
+                    document.getElementById('phone').tabIndex = 10;
+                    
+                    document.getElementById('wrap-notice').style.order = "10";
+                    
+                    document.getElementById('agreePolicy').tabIndex = 11;
+                }
+            });
+            // trigger change to remove AK and HI from initial load
+            countrySelect.dispatchEvent(new Event('change'));
+        }
+
         // Fetch PayPal client ID from server
         const configRes = await fetch('/api/config');
         const config = await configRes.json();
@@ -999,3 +1109,34 @@ function initSmoothScroll() {
         });
     });
 }
+
+/* ===============================================
+   Cookie Banner Logic
+   =============================================== */
+function initCookieBanner() {
+    if (!localStorage.getItem('cookie_consent')) {
+        const banner = document.createElement('div');
+        banner.innerHTML = `
+            <div style="position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.9); color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; border-top: 1px solid var(--color-gray-dark); font-family: 'Alte haas grotesk', sans-serif;">
+                <div>
+                    <p style="margin: 0; font-size: 0.9rem; line-height: 1.4;">We use cookies to improve your experience on our site and to analyze web traffic. By continuing to use our site, you consent to our <a href="privacy.html" style="color: #fff; text-decoration: underline;">Privacy Policy</a>.</p>
+                </div>
+                <div style="display: flex; gap: 10px; margin-left: 20px;">
+                    <button id="acceptCookies" style="background: var(--color-white); color: var(--color-black); border: none; padding: 8px 16px; cursor: pointer; font-family: inherit; font-size: 0.9rem;">Accept</button>
+                    <button id="rejectCookies" style="background: transparent; color: var(--color-white); border: 1px solid var(--color-white); padding: 8px 16px; cursor: pointer; font-family: inherit; font-size: 0.9rem;">Reject</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(banner);
+        
+        document.getElementById('acceptCookies').addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'accepted');
+            banner.remove();
+        });
+        document.getElementById('rejectCookies').addEventListener('click', () => {
+            localStorage.setItem('cookie_consent', 'rejected');
+            banner.remove();
+        });
+    }
+}
+document.addEventListener('DOMContentLoaded', initCookieBanner);

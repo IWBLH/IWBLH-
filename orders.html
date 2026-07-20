@@ -246,6 +246,13 @@
                 <p class="admin-header__subtitle">すべての注文を管理します</p>
             </header>
 
+            <!-- Country Filter Tabs -->
+            <div class="status-tabs" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button class="status-tab active" data-country="all" onclick="filterByCountry('all')">すべて (All Countries)</button>
+                <button class="status-tab" data-country="JP" onclick="filterByCountry('JP')">日本 (Japan)</button>
+                <button class="status-tab" data-country="US" onclick="filterByCountry('US')">アメリカ (USA)</button>
+            </div>
+
             <!-- Status Filter Tabs -->
             <div class="status-tabs" style="display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;">
                 <button class="status-tab active" data-status="all" onclick="filterByStatus('all')">すべて</button>
@@ -275,7 +282,7 @@
                 allOrders = orders;
 
                 // Render with current filter
-                filterByStatus(currentFilter);
+                applyFilters();
 
             } catch (err) {
                 console.error(err);
@@ -318,26 +325,58 @@
 
         // Store all orders for filtering
         let allOrders = [];
-        let currentFilter = 'all';
+        let currentStatusFilter = 'all';
+        let currentCountryFilter = 'all';
 
-        window.filterByStatus = function (status) {
-            currentFilter = status;
+        window.filterByCountry = function (country) {
+            currentCountryFilter = country;
 
             // Update tab styles
-            document.querySelectorAll('.status-tab').forEach(tab => {
+            document.querySelectorAll('button[data-country]').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.country === country) {
+                    tab.classList.add('active');
+                }
+            });
+
+            applyFilters();
+        };
+
+        window.filterByStatus = function (status) {
+            currentStatusFilter = status;
+
+            // Update tab styles
+            document.querySelectorAll('button[data-status]').forEach(tab => {
                 tab.classList.remove('active');
                 if (tab.dataset.status === status) {
                     tab.classList.add('active');
                 }
             });
 
-            // Filter and display orders
-            const filteredOrders = status === 'all'
-                ? allOrders
-                : allOrders.filter(o => o.status === status);
+            applyFilters();
+        };
+
+        function applyFilters() {
+            let filteredOrders = allOrders;
+
+            // Apply Status Filter
+            if (currentStatusFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(o => o.status === currentStatusFilter);
+            }
+
+            // Apply Country Filter
+            if (currentCountryFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(o => {
+                    const c = o.customer?.country;
+                    if (currentCountryFilter === 'US') {
+                        return c === 'US' || c === 'USA'; // Handle legacy orders
+                    }
+                    return c === currentCountryFilter;
+                });
+            }
 
             renderOrders(filteredOrders);
-        };
+        }
 
         function renderOrders(orders) {
             const container = document.getElementById('ordersList');
@@ -378,10 +417,20 @@
                             <div class="detail-grid">
                                 <div>
                                     <h4 style="margin-bottom: 10px; color: var(--color-gray);">顧客情報</h4>
-                                    <p>名前: ${order.customer.firstName} ${order.customer.lastName}</p>
+                                    <p>名前: ${
+                                        (order.customer.country === 'JP')
+                                        ? `${order.customer.lastName} ${order.customer.firstName}`
+                                        : `${order.customer.firstName} ${order.customer.lastName}`
+                                    }</p>
                                     <p>Email: ${order.customer.email}</p>
                                     <p>電話番号: ${order.customer.phone || 'N/A'}</p>
-                                    <p>住所: ${order.customer.address} ${order.customer.apartment ? order.customer.apartment : ''}, ${order.customer.city}, ${order.customer.state || ''} ${order.customer.zipCode}, ${order.customer.country || 'USA'}</p>
+                                    <p>住所: <br>
+                                    ${
+                                        (order.customer.country === 'JP')
+                                        ? `〒${order.customer.zipCode}<br>${order.customer.state || ''}${order.customer.city}${order.customer.address} ${order.customer.apartment || ''}<br>${order.customer.country}`
+                                        : `${order.customer.address} ${order.customer.apartment || ''}<br>${order.customer.city}, ${order.customer.state || ''} ${order.customer.zipCode}<br>${order.customer.country || 'USA'}`
+                                    }
+                                    </p>
                                 </div>
                                 <div>
                                     <h4 style="margin-bottom: 10px; color: var(--color-gray);">ステータス変更</h4>
