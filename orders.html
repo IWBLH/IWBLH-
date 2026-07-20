@@ -300,6 +300,8 @@
 
                 if (res.ok) {
                     // Status updated successfully
+                    alert('ステータスを更新しました');
+                    loadOrders(); // Reload to refresh the UI badge and filters
                 } else {
                     const data = await res.json();
                     alert('Update failed: ' + data.message);
