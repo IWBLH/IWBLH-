@@ -76,6 +76,13 @@
                         <div class="form-group">
                             <h2 class="form-section-title">Shipping Address</h2>
                             <div id="addressContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="input-wrapper" id="wrap-country" style="grid-column: 1 / -1; margin-bottom: 0;">
+                                    <select id="country" required>
+                                        <option value="" disabled selected>Country / 国を選択</option>
+                                        <option value="US">United States</option>
+                                        <option value="JP">Japan</option>
+                                    </select>
+                                </div>
                                 <div class="input-wrapper" id="wrap-firstName" style="margin-bottom: 0;">
                                     <input type="text" id="firstName" required placeholder="First Name">
                                 </div>
@@ -98,13 +105,6 @@
                                 </div>
                                 <div class="input-wrapper" id="wrap-zipCode" style="margin-bottom: 0;">
                                     <input type="text" id="zipCode" required placeholder="ZIP Code">
-                                </div>
-                                <div class="input-wrapper" id="wrap-country" style="margin-bottom: 0;">
-                                    <select id="country" required>
-                                        <option value="" disabled selected>Country / 国を選択</option>
-                                        <option value="US">United States</option>
-                                        <option value="JP">Japan</option>
-                                    </select>
                                 </div>
                                 <div class="input-wrapper" id="wrap-phone" style="grid-column: 1 / -1; margin-bottom: 0;">
                                     <input type="tel" id="phone" required placeholder="Phone Number">
