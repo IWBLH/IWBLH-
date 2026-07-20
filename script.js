@@ -24,11 +24,6 @@ async function initApp() {
 
     // If on checkout page, render it
     if (document.getElementById('checkoutItems')) {
-        const token = sessionStorage.getItem('moda_impeto_user_token');
-        if (!token) {
-            window.location.href = 'account_login.html?redirect=checkout.html';
-            return;
-        }
         renderCheckoutSummary();
 
         // Prefill email
