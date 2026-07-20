@@ -391,11 +391,19 @@
                 <summary style="cursor: pointer; color: var(--color-white); font-family: 'Cinzel', serif;">パスワード変更
                 </summary>
                 <form id="changePasswordForm" style="margin-top: 15px;">
-                    <div class="form-group">
-                        <input type="password" name="oldPassword" placeholder="現在のパスワード" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="password" id="oldPasswordInput" name="oldPassword" placeholder="現在のパスワード" required style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
                     </div>
-                    <div class="form-group">
-                        <input type="password" name="newPassword" placeholder="新しいパスワード" required>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="password" id="newPasswordInput" name="newPassword" placeholder="新しいパスワード" required style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="password" id="confirmPasswordInput" name="confirmPassword" placeholder="新しいパスワード (確認用)" required style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #fff;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--color-gray); font-size: 0.9rem;">
+                            <input type="checkbox" id="togglePasswordVisibility"> パスワードを表示する
+                        </label>
                     </div>
                     <button type="submit" class="admin-btn admin-btn--primary">パスワード更新</button>
                 </form>
@@ -900,6 +908,13 @@
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
 
+            if (data.newPassword !== data.confirmPassword) {
+                alert('新しいパスワードと確認用パスワードが一致しません。');
+                btn.disabled = false;
+                btn.textContent = originalText;
+                return;
+            }
+
             try {
                 const res = await fetchWithAuth('/api/auth/change-password', {
                     method: 'POST',
@@ -909,20 +924,27 @@
 
                 const result = await res.json();
 
-                if (res.ok) {
-                    alert('パスワードを変更しました');
+                if (result.success) {
+                    alert('パスワードが更新されました');
                     e.target.reset();
-                    e.target.closest('details').removeAttribute('open');
                 } else {
-                    alert('エラー: ' + result.message);
+                    alert('エラー: ' + (result.message || '更新に失敗しました'));
                 }
             } catch (err) {
                 console.error(err);
-                alert('通信エラーが発生しました');
+                alert('エラーが発生しました');
             } finally {
                 btn.disabled = false;
                 btn.textContent = originalText;
             }
+        });
+
+        // Toggle password visibility
+        document.getElementById('togglePasswordVisibility').addEventListener('change', function () {
+            const type = this.checked ? 'text' : 'password';
+            document.getElementById('oldPasswordInput').type = type;
+            document.getElementById('newPasswordInput').type = type;
+            document.getElementById('confirmPasswordInput').type = type;
         });
     </script>
 </body>
