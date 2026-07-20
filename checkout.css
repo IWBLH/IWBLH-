@@ -295,3 +295,9 @@ select:focus {
         padding: var(--space-md);
     }
 }
+
+@media (max-width: 600px) {
+    #addressContainer {
+        grid-template-columns: 1fr !important;
+    }
+}
