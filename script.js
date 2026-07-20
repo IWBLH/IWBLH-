@@ -626,37 +626,37 @@ async function initCheckout() {
                     // Layout changes for US
                     document.getElementById('email').tabIndex = 1;
 
-                    document.getElementById('wrap-firstName').style.order = "1";
+                    document.getElementById('wrap-country').style.order = "1";
+                    document.getElementById('wrap-country').style.gridColumn = "1 / -1";
+                    document.getElementById('country').tabIndex = 2;
+
+                    document.getElementById('wrap-firstName').style.order = "2";
                     document.getElementById('firstName').placeholder = "First Name";
-                    document.getElementById('firstName').tabIndex = 2;
+                    document.getElementById('firstName').tabIndex = 3;
                     
-                    document.getElementById('wrap-lastName').style.order = "2";
+                    document.getElementById('wrap-lastName').style.order = "3";
                     document.getElementById('lastName').placeholder = "Last Name";
-                    document.getElementById('lastName').tabIndex = 3;
+                    document.getElementById('lastName').tabIndex = 4;
                     
-                    document.getElementById('wrap-address').style.order = "3";
+                    document.getElementById('wrap-address').style.order = "4";
                     document.getElementById('address').placeholder = "Address";
-                    document.getElementById('address').tabIndex = 4;
+                    document.getElementById('address').tabIndex = 5;
                     
-                    document.getElementById('wrap-apartment').style.order = "4";
+                    document.getElementById('wrap-apartment').style.order = "5";
                     document.getElementById('apartment').placeholder = "Apartment, suite, etc. (optional)";
-                    document.getElementById('apartment').tabIndex = 5;
+                    document.getElementById('apartment').tabIndex = 6;
                     
-                    document.getElementById('wrap-city').style.order = "5";
+                    document.getElementById('wrap-city').style.order = "6";
                     document.getElementById('wrap-city').style.gridColumn = ""; // Reset for US
                     document.getElementById('city').placeholder = "City";
-                    document.getElementById('city').tabIndex = 6;
+                    document.getElementById('city').tabIndex = 7;
                     
-                    document.getElementById('wrap-state').style.order = "6";
-                    document.getElementById('state').tabIndex = 7;
+                    document.getElementById('wrap-state').style.order = "7";
+                    document.getElementById('state').tabIndex = 8;
                     
-                    document.getElementById('wrap-zipCode').style.order = "7";
+                    document.getElementById('wrap-zipCode').style.order = "8";
                     document.getElementById('zipCode').placeholder = "ZIP Code";
-                    document.getElementById('zipCode').tabIndex = 8;
-                    
-                    document.getElementById('wrap-country').style.order = "8";
-                    document.getElementById('wrap-country').style.gridColumn = ""; // Reset for US
-                    document.getElementById('country').tabIndex = 9;
+                    document.getElementById('zipCode').tabIndex = 9;
                     
                     document.getElementById('wrap-phone').style.order = "9";
                     document.getElementById('phone').placeholder = "Phone Number";
