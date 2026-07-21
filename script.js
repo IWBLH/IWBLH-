@@ -455,6 +455,19 @@ function initPayPal() {
                 item.addEventListener('keyup', validateForm);
             });
         },
+        onClick: function (data, actions) {
+            const agreePolicy = document.getElementById('agreePolicy').checked;
+            if (!agreePolicy) {
+                showToast('利用規約と各種ポリシーに同意するチェックを入れてください。');
+                return actions.reject();
+            }
+
+            const form = document.getElementById('checkoutForm');
+            if (!form.checkValidity()) {
+                showToast('配送先情報をすべて正しく入力してください。');
+                return actions.reject();
+            }
+        },
         createOrder: function (data, actions) {
             // Calculate total
             const cartKey = getCartKey();
