@@ -456,15 +456,18 @@ function initPayPal() {
             });
         },
         onClick: function (data, actions) {
+            const country = document.getElementById('country').value;
+            const isJP = country === 'JP';
+
             const agreePolicy = document.getElementById('agreePolicy').checked;
             if (!agreePolicy) {
-                showToast('利用規約と各種ポリシーに同意するチェックを入れてください。');
+                showToast(isJP ? '利用規約と各種ポリシーに同意するチェックを入れてください。' : 'Please check the box to agree to the Terms of Service and policies.');
                 return actions.reject();
             }
 
             const form = document.getElementById('checkoutForm');
             if (!form.checkValidity()) {
-                showToast('配送先情報をすべて正しく入力してください。');
+                showToast(isJP ? '配送先情報をすべて正しく入力してください。' : 'Please fill out all required shipping information correctly.');
                 return actions.reject();
             }
         },
