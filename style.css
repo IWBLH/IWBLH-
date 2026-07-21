@@ -369,7 +369,65 @@ p {
   }
 }
 
+.hero__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  animation: fadeUp 1s 1.5s forwards;
+  cursor: pointer;
+  text-decoration: none;
+  z-index: 20;
+}
 
+.hero__scroll-text {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--color-gray);
+  text-transform: uppercase;
+  transition: var(--transition-normal);
+}
+
+.hero__scroll:hover .hero__scroll-text {
+  color: var(--color-black);
+}
+
+.hero__scroll-arrow {
+  width: 1px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__scroll-arrow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-black);
+  transform: translateY(-100%);
+  animation: scrollLine 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+
+@keyframes scrollLine {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translate(-50%, 20px); }
+  100% { opacity: 1; transform: translate(-50%, 0); }
+}
 
 .hero__brand {
   font-family: var(--font-display);
