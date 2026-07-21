@@ -441,11 +441,15 @@ function initPayPal() {
                 const phone = document.getElementById('phone').value;
                 const country = document.getElementById('country').value;
                 const agreePolicy = document.getElementById('agreePolicy').checked;
+                
+                const wrapper = document.getElementById('paypal-wrapper');
 
                 if (email && firstName && lastName && address && city && state && zipCode && phone && country && agreePolicy) {
                     actions.enable();
+                    if (wrapper) wrapper.style.pointerEvents = 'none'; // Pass clicks to PayPal
                 } else {
                     actions.disable();
+                    if (wrapper) wrapper.style.pointerEvents = 'auto'; // Catch clicks on wrapper
                 }
             };
 
@@ -454,21 +458,21 @@ function initPayPal() {
                 item.addEventListener('change', validateForm);
                 item.addEventListener('keyup', validateForm);
             });
-        },
-        onClick: function (data, actions) {
-            const country = document.getElementById('country').value;
-            const isJP = country === 'JP';
-
-            const agreePolicy = document.getElementById('agreePolicy').checked;
-            if (!agreePolicy) {
-                showToast(isJP ? '利用規約と各種ポリシーに同意するチェックを入れてください。' : 'Please check the box to agree to the Terms of Service and policies.');
-                return actions.reject();
-            }
-
-            const form = document.getElementById('checkoutForm');
-            if (!form.checkValidity()) {
-                showToast(isJP ? '配送先情報をすべて正しく入力してください。' : 'Please fill out all required shipping information correctly.');
-                return actions.reject();
+            
+            // Custom click handler for disabled state
+            const wrapper = document.getElementById('paypal-wrapper');
+            if (wrapper) {
+                wrapper.addEventListener('click', () => {
+                    const country = document.getElementById('country').value;
+                    const isJP = country === 'JP';
+                    const agreePolicy = document.getElementById('agreePolicy').checked;
+                    
+                    if (!agreePolicy) {
+                        showToast(isJP ? '利用規約と各種ポリシーに同意するチェックを入れてください。' : 'Please check the box to agree to the Terms of Service and policies.');
+                    } else {
+                        showToast(isJP ? '配送先情報をすべて正しく入力してください。' : 'Please fill out all required shipping information correctly.');
+                    }
+                });
             }
         },
         createOrder: function (data, actions) {
