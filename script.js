@@ -455,15 +455,6 @@ function initPayPal() {
                 item.addEventListener('keyup', validateForm);
             });
         },
-        onClick: function (data, actions) {
-            // Backup validation
-            const form = document.getElementById('checkoutForm');
-            if (!form.checkValidity()) {
-                showToast('配送先情報をすべて入力してください。');
-                return actions.reject();
-            }
-            return actions.resolve();
-        },
         createOrder: function (data, actions) {
             // Calculate total
             const cartKey = getCartKey();
