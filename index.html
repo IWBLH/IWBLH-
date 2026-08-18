@@ -21,6 +21,32 @@
 </head>
 
 <body>
+  <!-- IWBLH Camouflage Style -->
+  <style>
+    /* ホーム画面のみ、文字や線をすべて背景色と同化させる（ハイライトでのみ読める隠し文字） */
+    body {
+      background-color: #ED230D !important;
+    }
+    h1, h2, h3, h4, h5, h6, p, a, span, div {
+      color: #ED230D !important;
+      border-color: #ED230D !important;
+    }
+    .footer__bottom {
+      border-top-color: #ED230D !important;
+    }
+    .hero__scroll-arrow {
+      background-color: #ED230D !important;
+    }
+    .hero__scroll-arrow::after {
+      background-color: #ED230D !important;
+      border-color: #ED230D !important;
+    }
+    .nav__logo-link * {
+      /* ロゴの画像だけはそのまま表示する */
+      color: initial !important;
+    }
+  </style>
+
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <div class="nav__toggle" id="navToggle">
