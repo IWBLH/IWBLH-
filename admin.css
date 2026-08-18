@@ -133,7 +133,7 @@
 .admin-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 40px rgba(237, 35, 13, 0.3);
 }
 
 .admin-card--clickable {
@@ -287,7 +287,7 @@
 
 .admin-btn--primary {
     background: linear-gradient(135deg, var(--color-accent) 0%, #a08050 100%);
-    color: #000;
+    color: #ED230D;
 }
 
 .admin-btn--primary:hover {

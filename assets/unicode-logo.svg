@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <rect width="1080" height="1080" fill="white" />
+  <text x="540" y="460" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="bold" fill="#e62b2b" text-anchor="middle" letter-spacing="2">U+0048 U+0065 U+006C</text>
+  <text x="540" y="560" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="bold" fill="#e62b2b" text-anchor="middle" letter-spacing="2">U+0076 U+0065 U+0074</text>
+  <text x="540" y="660" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="bold" fill="#e62b2b" text-anchor="middle" letter-spacing="2">U+0069 U+0063 U+0061</text>
+</svg>

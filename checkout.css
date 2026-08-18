@@ -92,7 +92,7 @@ input[type="tel"]:focus,
 select:focus {
     outline: none;
     border-color: var(--color-black);
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(237, 35, 13,0.1);
 }
 
 /* Payment Methods */

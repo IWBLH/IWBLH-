@@ -21,14 +21,14 @@
    =============================================== */
 :root {
   /* Brand Colors */
-  --color-black: #000000;
-  --color-black-light: #222222;
-  --color-black-lighter: #444444;
-  --color-red: #000000;
-  --color-red-dark: #000000;
-  --color-red-light: #444444;
-  --color-yellow: #000000;
-  --color-yellow-dark: #000000;
+  --color-black: #ED230D;
+  --color-black-light: #991608;
+  --color-black-lighter: #660e05;
+  --color-red: #ED230D;
+  --color-red-dark: #ED230D;
+  --color-red-light: #660e05;
+  --color-yellow: #ED230D;
+  --color-yellow-dark: #ED230D;
   --color-white: #ffffff;
   --color-gray: #888888;
   --color-gray-dark: #e0e0e0;
@@ -104,7 +104,7 @@ img {
 }
 
 .nav__logo, .hero__logo, .story__logo, .footer__logo, .admin-sidebar__logo img {
-  mix-blend-mode: multiply;
+  
 }
 
 
@@ -191,7 +191,7 @@ p {
   transition: var(--transition-normal);
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.07);
+  box-shadow: 0 1px 0 rgba(237, 35, 13,0.07);
   color: var(--color-black) !important;
 }
 
@@ -199,7 +199,7 @@ p {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   padding: var(--space-sm) var(--space-lg);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  box-shadow: 0 1px 0 rgba(237, 35, 13,0.05);
 }
 
 /* ... previous styles ... */
@@ -353,8 +353,7 @@ p {
 .hero__logo {
   width: min(400px, 70vw);
   margin: 0 auto var(--space-lg);
-  animation: logoReveal 1.5s var(--transition-luxury) forwards;
-  mix-blend-mode: multiply;
+  
 }
 
 @keyframes logoReveal {
@@ -401,7 +400,7 @@ p {
 .hero__scroll-arrow {
   width: 1px;
   height: 50px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(237, 35, 13, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -832,7 +831,7 @@ padding: var(--space-2xl) 0;
   width: 80%;
   max-width: 400px;
   animation: floatLogo 6s ease-in-out infinite;
-  mix-blend-mode: multiply;
+  
 }
 
 @keyframes floatLogo {
@@ -1208,7 +1207,7 @@ padding: var(--space-xl) 0 var(--space-md);
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: rgba(30, 30, 30, 0.95);
+  background: rgba(153, 22, 8, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid #32cd32;
   border-radius: 8px;
@@ -1216,7 +1215,7 @@ padding: var(--space-xl) 0 var(--space-md);
   display: flex;
   align-items: center;
   z-index: 9999;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(50, 205, 50, 0.3);
+  box-shadow: 0 10px 40px rgba(237, 35, 13, 0.5), 0 0 20px rgba(50, 205, 50, 0.3);
   transform: translateX(100%);
   opacity: 0;
   transition: all 0.3s ease;
@@ -1272,13 +1271,13 @@ padding: var(--space-xl) 0 var(--space-md);
     padding: var(--space-sm) var(--space-md) !important;
     background: rgba(255, 255, 255, 0.97) !important;
     backdrop-filter: blur(20px) !important;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.07) !important;
+    box-shadow: 0 1px 0 rgba(237, 35, 13,0.07) !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
     z-index: 1000 !important;
-    color: #000000 !important;
+    color: #ED230D !important;
   }
 
   .nav__toggle {
@@ -1308,7 +1307,7 @@ padding: var(--space-xl) 0 var(--space-md);
 
   .nav__link {
     font-size: 1.6rem !important;
-    color: #000000 !important;
+    color: #ED230D !important;
     font-weight: 500 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.15em !important;

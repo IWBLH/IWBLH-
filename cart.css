@@ -47,7 +47,7 @@
 
 .cart-item:hover {
     border-color: #ddd;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(237, 35, 13,0.05);
 }
 
 .cart-item__image {
